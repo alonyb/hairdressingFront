@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-
 import { clientes } from './clientes.json';
+import ClientesForm from './components/ClientesForm';
 
 class App extends Component {
   constructor() {
@@ -10,6 +10,13 @@ class App extends Component {
     this.state = {
       clientes,
     };
+    this.handleAddClient = this.handleAddClient.bind(this);
+  }
+
+  handleAddClient(cliente) {
+    this.setState({
+      clientes: [...this.state.clientes, cliente]
+    })
   }
 
   render() {
@@ -43,7 +50,12 @@ class App extends Component {
           </nav>
           <div className="container">
             <div className="row mt-4">
-              { clientes }
+              <ClientesForm onAddCliente={this.handleAddClient} />
+            </div>
+            <div className="cold-md-9">
+              <div className="row">
+                { clientes }
+              </div>
             </div>
           </div>
       </div>
