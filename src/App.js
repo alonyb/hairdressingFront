@@ -1,16 +1,25 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { clientes } from './clientes.json';
+//import { ConsultClients } from './clientes.json';
 import ClientesForm from './components/ClientesForm';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      clientes,
+      ConsultClients:[],
     };
     this.handleAddClient = this.handleAddClient.bind(this);
+  }
+
+  
+  componentDidMount() {
+    fetch('http://localhost:8000/get/client/v1')
+      .then(results => {
+        return results.json();
+      }).then(data => {
+        this.setState({ ConsultClients: data.ConsultClients })
+      })   
   }
 
   handleAddClient(cliente) {
@@ -20,18 +29,18 @@ class App extends Component {
   }
 
   render() {
-    const clientes = this.state.clientes.map((cliente, i) => {
+    const clientes = this.state.ConsultClients.map((cliente) => {
       return (
         <div className="col-md-5">
           <div className="card mt-4">
             <div className="card-header">
-              <h3>{ cliente.nombre }</h3>
-              <span className="badge badge-pill badge-danger ml-1">
-                {cliente.nombre}
+              <h3>{ cliente.First_name }</h3>
+              <span className="badge badge-pill badge-warning ml-1">
+                {cliente.Id}
               </span>
             </div>
             <div className="card=body">
-              <p>{cliente.edad}</p>
+              <p>{cliente.Age}</p>
             </div>
           </div>
         </div>
@@ -41,10 +50,10 @@ class App extends Component {
     return (
       <div className="App">
           <nav className="navbar navbar-dark bg-dark">
-            <a href="" className="text-white">
+            <a href="http://localhost:3000" className="text-white">
               Clientes
               <span className="badge badge-pill badge-light ml-2">
-                {this.state.clientes.length}
+                {this.state.ConsultClients.length}
               </span>
             </a>
           </nav>
